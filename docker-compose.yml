@@ -1,7 +1,7 @@
 version: '3'
 services:
   mysqldb:
-    image: mysql:latest
+    image: mysql:8.0.35
     environment:
       MYSQL_DATABASE: spring_test_db
       MYSQL_ROOT_PASSWORD: Malith10a
