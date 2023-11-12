@@ -26,7 +26,7 @@ public class StudentServiceImpl implements StudentService {
     @Autowired
     public StudentServiceImpl(ModelMapper modelMapper,
                               @Qualifier("jdbc") StudentDao studentDao) {
-        this.modelMapper = modelMapper;
+        this.modelMapper= modelMapper;
         this.studentDao = studentDao;
     }
 
