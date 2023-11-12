@@ -1,0 +1,29 @@
+{
+  "AWSEBDockerrunVersion": 2,
+  "containerDefinitions": [
+
+    {
+      "name": "malithsumuditha-api",
+      "image": "malithsumuditha/malithsumuditha-api:latest",
+      "essential": true,
+      "memory": 512,
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 8080
+        }
+      ],
+      "environment": [
+        {
+          "name": "SPRING_DATASOURCE_URL",
+          "value": "jdbc:mysql://awseb-e-fkqutkm4ve-stack-awsebrdsdatabase-0yaire4onota.coetsdotlg05.ap-south-1.rds.amazonaws.com:3306/spring_test_db"
+
+        },
+        {
+          "name": "SPRING_PROFILES_ACTIVE",
+          "value": "test"
+        }
+      ]
+    }
+  ]
+}

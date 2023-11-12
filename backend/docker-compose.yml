@@ -1,0 +1,27 @@
+version: '3'
+services:
+  mysqldb:
+    image: mysql:latest
+    environment:
+      MYSQL_DATABASE: spring_test_db
+      MYSQL_ROOT_PASSWORD: Malith10a
+      MYSQL_USER: malith
+      MYSQL_PASSWORD: Malith10a
+    networks:
+      - springboot-mysql-net
+    ports:
+      - "3307:3306"
+
+  malithsumuditha-api:
+    image: malithsumuditha/malithsumuditha-api:latest
+    depends_on:
+      - mysqldb
+    ports:
+      - "8088:8080"
+    networks:
+      - springboot-mysql-net
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysqldb:3306/spring_test_db
+networks:
+  springboot-mysql-net:
+    driver: bridge
