@@ -23,9 +23,9 @@ public class StudentController {
     }
 
     @PostMapping(path = "save-student")
-    public void saveStudent(@RequestBody StudentRequestDto studentRequestDto){
+    public String saveStudent(@RequestBody StudentRequestDto studentRequestDto){
         studentService.saveStudent(studentRequestDto);
-
+        return "Save Success";
     }
 
     @GetMapping(path = "get-students")
