@@ -21,6 +21,11 @@ jobs:
           MYSQL_DATABASE: spring_test_db
         ports:
           - "3307:3306"
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
 
     defaults:
       run:
@@ -66,7 +71,7 @@ jobs:
           version_description: ${{github.SHA}}
           region: ${{ secrets.EB_REGION }}
           deployment_package: backend/Dockerrun.aws.json
-          wait_for_environment_recovery: 180
+          ignore_health_check: true
 
       - name: Commit and push Dockerrun.aws.json
         run: |
