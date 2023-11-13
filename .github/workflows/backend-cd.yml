@@ -2,16 +2,16 @@ name: CD - Deploy Backend
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: '_TEST'
   push:
     branches:
       - main
     paths:
       - backend/**
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: '_TEST'
 
 jobs:
   deploy:
