@@ -2,11 +2,11 @@ name: CD - Deploy Backend
 
 on:
   workflow_dispatch:
-    push:
-      branches:
-        - main
-      paths:
-        - backend/**
+  push:
+    branches:
+      - main
+    paths:
+      - backend/**
 
 jobs:
   deploy:
@@ -21,11 +21,7 @@ jobs:
           MYSQL_DATABASE: spring_test_db
         ports:
           - "3307:3306"
-    #        options: >-
-    #          --health-cmd="mysqladmin ping"
-    #          --health-interval=10s
-    #          --health-timeout=5s
-    #          --health-retries=5
+
     defaults:
       run:
         working-directory: ./backend
