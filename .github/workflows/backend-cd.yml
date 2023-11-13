@@ -2,11 +2,6 @@ name: CD - Deploy Backend
 
 on:
   workflow_dispatch:
-    inputs:
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: '_TEST'
   push:
     branches:
       - main
@@ -55,13 +50,13 @@ jobs:
         run: echo "BUILD_NUMBER=$(date '+%d.%m.%Y.%H.%M.%S')" >> $GITHUB_OUTPUT
 
       - name: Build and run Unit/Integration Test with Maven
-        run: mvn -ntp -B verify -Ddocker.image.tag=${{ steps.build-number.outputs.BUILD_NUMBER }} jib:build
+        run: mvn -ntp -B verify -Ddocker.image.tag=${{steps.build-number.outputs.BUILD_NUMBER}} jib:build
 
       - name: Update Dockerrun.aws.json api image tag with new build number
         run: |
           echo "Dockerrun.aws.json before updating tag"
           cat Dockerrun.aws.json
-          sed -i -E 's_(malithsumuditha/malithsumuditha-api:)([^"]*)_\1'${{ steps.build-number.outputs.BUILD_NUMBER }}'_' Dockerrun.aws.json
+          sed -i -E 's_(malithsumuditha/malithsumuditha-api:)([^"]*)_\1'${{steps.build-number.outputs.BUILD_NUMBER}}'_' Dockerrun.aws.json
           echo "Dockerrun.aws.json after updating tag"
           cat Dockerrun.aws.json
 
@@ -76,11 +71,11 @@ jobs:
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets['AWS_SECRET_ACCESS_KEY' + github.event.inputs.environment] }}
-          application_name: ${{ secrets['EB_APPLICATION_NAME' + github.event.inputs.environment] }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: ${{ secrets.EB_APPLICATION_NAME }}
           environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
-          version_description: ${{ github.SHA }}
+          version_description: ${{github.SHA}}
           region: ${{ secrets.EB_REGION }}
-          deployment_package: backend/test-Dockerrun.aws.json
+          deployment_package: backend/Dockerrun.aws.json
           ignore_health_check: true
