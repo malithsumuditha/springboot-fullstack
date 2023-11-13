@@ -2,6 +2,11 @@ name: CD - Deploy Backend
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: '_TEST'
   push:
     branches:
       - main
@@ -71,11 +76,11 @@ jobs:
         uses: einaregilsson/beanstalk-deploy@v21
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: ${{ secrets.EB_APPLICATION_NAME }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY${{ github.event.inputs.environment }} }}
+          application_name: ${{ secrets.EB_APPLICATION_NAME${{ github.event.inputs.environment }} }}
           environment_name: ${{ secrets.EB_ENVIRONMENT_NAME }}
           version_label: ${{ steps.build-number.outputs.BUILD_NUMBER }}
           version_description: ${{github.SHA}}
           region: ${{ secrets.EB_REGION }}
-          deployment_package: backend/Dockerrun.aws.json
+          deployment_package: backend/test-Dockerrun.aws.json
           ignore_health_check: true
