@@ -9,6 +9,6 @@ public class TestController {
 
     @GetMapping("/malith")
     public Malith getString(){
-        return new Malith("Test Success again...5559");
+        return new Malith("Test Success again...55591");
     }
 }
