@@ -5,10 +5,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class TestController {
+    private static int COUNTER =0;
     record Malith(String result){}
 
     @GetMapping("/malith")
     public Malith getString(){
-        return new Malith("Slack test successs funnn");
+        return new Malith("Malith %s".formatted(++COUNTER));
     }
 }
