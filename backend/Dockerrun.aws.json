@@ -4,7 +4,7 @@
 
     {
       "name": "malithsumuditha-api",
-      "image": "malithsumuditha/malithsumuditha-api:latest",
+      "image": "malithsumuditha/malithsumuditha-api:17.11.2023.15.58.22",
       "essential": true,
       "memory": 512,
       "portMappings": [
