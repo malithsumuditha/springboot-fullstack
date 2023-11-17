@@ -10,6 +10,6 @@ public class TestController {
 
     @GetMapping("/malith")
     public Malith getString(){
-        return new Malith("Hello Malith Sumuu %s".formatted(++COUNTER));
+        return new Malith("Hello Malith Sumuuu %s".formatted(++COUNTER));
     }
 }
