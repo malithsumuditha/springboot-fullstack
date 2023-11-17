@@ -45,7 +45,7 @@ class StudentServiceImplTest {
         // Given
         long id = 1L;
         Student student = new Student(
-                id, "malith", "Matara", 19, "m@gmail.com"
+                id, "malith", "Matara", 19, "m@gmail.com","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
@@ -62,7 +62,7 @@ class StudentServiceImplTest {
         when(studentDao.existsStudentByEmail(email)).thenReturn(false);
 
         StudentRequestDto requestDto = new StudentRequestDto(
-                "Malith", "Matara", 20, email
+                "Malith", "Matara", 20, email,"male"
         );
 
 
@@ -79,6 +79,7 @@ class StudentServiceImplTest {
         assertThat(studentCaptorValue.getAddress()).isEqualTo(requestDto.getAddress());
         assertThat(studentCaptorValue.getAge()).isEqualTo(requestDto.getAge());
         assertThat(studentCaptorValue.getEmail()).isEqualTo(requestDto.getEmail());
+        assertThat(studentCaptorValue.getGender()).isEqualTo(requestDto.getGender());
 
     }
 
@@ -89,7 +90,7 @@ class StudentServiceImplTest {
         when(studentDao.existsStudentByEmail(email)).thenReturn(true);
 
         StudentRequestDto requestDto = new StudentRequestDto(
-                "Malith", "Matara", 20, email
+                "Malith", "Matara", 20, email,"male"
         );
 
 
@@ -132,7 +133,7 @@ class StudentServiceImplTest {
     void deleteStudentById() {
         // Given
         long id = 1;
-        Student student = new Student(id, "m", "a", 19, "a");
+        Student student = new Student(id, "m", "a", 19, "a","male");
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         // When
@@ -164,13 +165,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                "Malith","galle",21, newEmail
+                "Malith","galle",21, newEmail,"male"
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(false);
@@ -190,6 +191,7 @@ class StudentServiceImplTest {
         assertThat(captorStudent.getAddress()).isEqualTo(studentRequestDto.getAddress());
         assertThat(captorStudent.getAge()).isEqualTo(studentRequestDto.getAge());
         assertThat(captorStudent.getEmail()).isEqualTo(studentRequestDto.getEmail());
+        assertThat(captorStudent.getGender()).isEqualTo(studentRequestDto.getGender());
     }
 
     @Test
@@ -197,13 +199,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                "Malith",null,0, null
+                "Malith",null,0, null,null
         );
 
         // When
@@ -228,13 +230,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,0, newEmail
+                null,null,0, newEmail,null
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(false);
@@ -254,6 +256,7 @@ class StudentServiceImplTest {
         assertThat(captorStudent.getAddress()).isEqualTo(student.getAddress());
         assertThat(captorStudent.getAge()).isEqualTo(student.getAge());
         assertThat(captorStudent.getEmail()).isEqualTo(newEmail);
+        assertThat(captorStudent.getGender()).isEqualTo(student.getGender());
     }
 
     @Test
@@ -261,13 +264,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,0, newEmail
+                null,null,0, newEmail,null
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(true);
@@ -289,13 +292,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                student.getName(),student.getAddress(),student.getAge(), student.getEmail()
+                student.getName(),student.getAddress(),student.getAge(), student.getEmail(), student.getGender()
         );
 
         // When
@@ -315,13 +318,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,"Galle",0, null
+                null,"Galle",0, null,null
         );
 
         // When
@@ -339,6 +342,7 @@ class StudentServiceImplTest {
         assertThat(captorStudent.getAddress()).isEqualTo(studentRequestDto.getAddress());
         assertThat(captorStudent.getAge()).isEqualTo(student.getAge());
         assertThat(captorStudent.getEmail()).isEqualTo(student.getEmail());
+        assertThat(captorStudent.getGender()).isEqualTo(student.getGender());
     }
 
     @Test
@@ -346,13 +350,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma"
+                id,"m","a",19,"ma","male"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,22, null
+                null,null,22, null,null
         );
 
         // When
@@ -370,5 +374,38 @@ class StudentServiceImplTest {
         assertThat(captorStudent.getAddress()).isEqualTo(student.getAddress());
         assertThat(captorStudent.getAge()).isEqualTo(studentRequestDto.getAge());
         assertThat(captorStudent.getEmail()).isEqualTo(student.getEmail());
+        assertThat(captorStudent.getGender()).isEqualTo(student.getGender());
+    }
+
+    @Test
+    void updateStudentGenderOnly() {
+        // Given
+        long id =1;
+        Student student = new Student(
+                id,"m","a",19,"ma","male"
+        );
+        when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
+
+        String newEmail = "m@gmail.com";
+        StudentRequestDto studentRequestDto = new StudentRequestDto(
+                null,null,0, null,"female"
+        );
+
+        // When
+        underTest.updateStudent(id,studentRequestDto);
+
+        // Then
+        ArgumentCaptor<StudentResponseDto> studentResponseDtoArgumentCaptor =
+                ArgumentCaptor.forClass(StudentResponseDto.class);
+
+        verify(studentDao).updateStudent(studentResponseDtoArgumentCaptor.capture());
+
+        StudentResponseDto captorStudent = studentResponseDtoArgumentCaptor.getValue();
+
+        assertThat(captorStudent.getName()).isEqualTo(student.getName());
+        assertThat(captorStudent.getAddress()).isEqualTo(student.getAddress());
+        assertThat(captorStudent.getAge()).isEqualTo(student.getAge());
+        assertThat(captorStudent.getEmail()).isEqualTo(student.getEmail());
+        assertThat(captorStudent.getGender()).isEqualTo(studentRequestDto.getGender());
     }
 }

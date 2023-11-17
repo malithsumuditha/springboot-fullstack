@@ -32,7 +32,8 @@ class StudentRepositoryTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                email
+                email,
+                "male"
 
         );
         underTest.save(student);

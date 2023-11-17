@@ -65,7 +65,8 @@ class StudentDaoImplTest {
                 "Malith",
                 "Matara",
                 20,
-                "m@gmail.com"
+                "m@gmail.com",
+                "male"
         );
 
         // When
@@ -105,7 +106,8 @@ class StudentDaoImplTest {
                 "Malith",
                 "Matara",
                 20,
-                "m@gmail.com"
+                "m@gmail.com",
+                "male"
         );
 
         // When

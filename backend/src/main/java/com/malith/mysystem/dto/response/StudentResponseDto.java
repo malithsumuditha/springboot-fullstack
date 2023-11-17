@@ -16,11 +16,13 @@ public class StudentResponseDto {
     private String address;
     private int age;
     private String email;
+    private String gender;
 
-    public StudentResponseDto( String name, String address, int age, String email) {
+    public StudentResponseDto( String name, String address, int age, String email, String gender) {
         this.name = name;
         this.address = address;
         this.age = age;
         this.email = email;
+        this.gender = gender;
     }
 }

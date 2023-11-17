@@ -44,10 +44,10 @@ public class StudentJDBCDataAccessService implements StudentDao {
     @Override
     public void save(Student student) {
         var sql = """
-                INSERT INTO student (name,address,age,email)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO student (name,address,age,email,gender)
+                VALUES (?, ?, ?, ?,?)
                 """;
-        int update = jdbcTemplate.update(sql, student.getName(), student.getAddress(), student.getAge(), student.getEmail());
+        int update = jdbcTemplate.update(sql, student.getName(), student.getAddress(), student.getAge(), student.getEmail(), student.getGender());
         System.out.println("insert result "+update);
 
     }

@@ -37,9 +37,10 @@ class StudentIntegrationTest {
         String address = faker.address().fullAddress();
         int age = RANDOM.nextInt(10, 50);
         String email = fakerName.firstName() + UUID.randomUUID() + "@testing.com";
+        String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email
+                name, address, age, email, gender
         );
 
         //send post request
@@ -66,7 +67,7 @@ class StudentIntegrationTest {
 
         //make sure that student is present
         StudentResponseDto expectedStudent = new StudentResponseDto(
-                name, address, age, email
+                name, address, age, email,gender
         );
 
         Assertions.assertThat(allStudents)
@@ -102,9 +103,10 @@ class StudentIntegrationTest {
         String address = faker.address().fullAddress();
         int age = RANDOM.nextInt(10, 50);
         String email = fakerName.firstName() + UUID.randomUUID() + "@testing.com";
+        String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email
+                name, address, age, email,gender
         );
 
         //send post request
@@ -162,9 +164,10 @@ class StudentIntegrationTest {
         String address = faker.address().fullAddress();
         int age = RANDOM.nextInt(10, 50);
         String email = fakerName.firstName() + UUID.randomUUID() + "@testing.com";
+        String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email
+                name, address, age, email,gender
         );
 
         //send post request
@@ -198,7 +201,7 @@ class StudentIntegrationTest {
 
         String newName = "HPMS Udara";
         StudentRequestDto updateRequestDto = new StudentRequestDto(
-                  newName,null,0,null
+                  newName,null,0,null,null
         );
 
         //update student
@@ -224,7 +227,7 @@ class StudentIntegrationTest {
                 .getResponseBody();
 
         StudentResponseDto expectStudent = new StudentResponseDto(
-                id,newName,address,age,email
+                id,newName,address,age,email,gender
         );
 
         Assertions.assertThat(updatedStudent).isEqualTo(expectStudent);

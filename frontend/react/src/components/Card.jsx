@@ -14,7 +14,10 @@ import {
 } from '@chakra-ui/react'
 import React from "react";
 
-export default function CardWithImage({studentId,name,email,age,address}) {
+export default function CardWithImage({studentId,name,email,age,address,gender, imageNumber}) {
+
+    const genderOfStudent = gender === "male" || gender === "Male"? "men" : "women";
+
     return (
         <Center py={6}>
             <Box
@@ -37,7 +40,7 @@ export default function CardWithImage({studentId,name,email,age,address}) {
                     <Avatar
                         size={'xl'}
                         src={
-                            'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&ixid=eyJhcHBfaWQiOjE3Nzg0fQ'
+                            `https://randomuser.me/api/portraits/${genderOfStudent}/${imageNumber}.jpg`
                         }
                         css={{
                             border: '2px solid white',
@@ -52,7 +55,7 @@ export default function CardWithImage({studentId,name,email,age,address}) {
                             {name}
                         </Heading>
                         <Text color={'gray.500'}>{email}</Text>
-                        <Text color={'gray.500'}>{age} years</Text>
+                        <Text color={'gray.500'}>{age} years | {gender.toLocaleUpperCase()}</Text>
                     </Stack>
 
                 </Box>

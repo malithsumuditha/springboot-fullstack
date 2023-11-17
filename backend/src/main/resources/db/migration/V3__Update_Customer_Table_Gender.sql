@@ -1,0 +1,2 @@
+ALTER TABLE student
+    ADD COLUMN gender VARCHAR(50) NOT NULL;

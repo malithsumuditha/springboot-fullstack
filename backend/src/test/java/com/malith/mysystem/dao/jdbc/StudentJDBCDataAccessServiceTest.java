@@ -37,7 +37,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                email
+                email,
+                "male"
 
         );
         underTest.save(student);
@@ -57,6 +58,7 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
             Assertions.assertThat(c.getEmail()).isEqualTo(student.getEmail());
             Assertions.assertThat(c.getAge()).isEqualTo(student.getAge());
             Assertions.assertThat(c.getAddress()).isEqualTo(student.getAddress());
+            Assertions.assertThat(c.getGender()).isEqualTo(student.getGender());
             System.out.println();
 
         });
@@ -73,7 +75,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                email
+                email,
+                "male"
 
         );
         underTest.save(student);
@@ -111,7 +114,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                FAKER.internet().safeEmailAddress()+"-"+ UUID.randomUUID()
+                FAKER.internet().safeEmailAddress()+"-"+ UUID.randomUUID(),
+                "male"
         );
         underTest.save(student);
 
@@ -135,7 +139,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                email
+                email,
+                "male"
 
         );
         underTest.save(student);
@@ -163,7 +168,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.name().fullName(),
                 FAKER.address().fullAddress(),
                 20,
-                email
+                email,
+                "male"
 
         );
         underTest.save(student);
@@ -179,6 +185,7 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
         update.setStudentId(id);
         update.setName(newName);
         update.setEmail(email);
+        update.setGender("male");
 
         underTest.updateStudent(update);
 

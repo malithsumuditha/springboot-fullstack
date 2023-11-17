@@ -30,4 +30,7 @@ public class Student {
     private int age;
     @Column(name = "email")
     private String email;
+
+    @Column(name = "gender")
+    private String gender;
 }

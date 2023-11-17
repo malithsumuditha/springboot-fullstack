@@ -103,6 +103,10 @@ public class StudentServiceImpl implements StudentService {
             student.setEmail(studentRequestDto.getEmail());
             changes = true;
         }
+        if (studentRequestDto.getGender()!=null && studentRequestDto.getGender()!=student.getGender()){
+            student.setGender(studentRequestDto.getGender());
+            changes = true;
+        }
 
         if (!changes){
             throw new RequestValidationException("No data change found");
