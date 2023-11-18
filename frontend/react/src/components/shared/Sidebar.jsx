@@ -51,7 +51,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
             pos="fixed"
             h="full"
             {...rest}>
-            <Flex h="20" flexDirection="column" alignItems="center" mx="8" mt={5} mb={50} justifyContent="space-between">
+            <Flex h="20" flexDirection="column" alignItems="center" mx="8" mt={5} mb={75} justifyContent="space-between">
                 <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold" >
                     Dashboard
                 </Text>
@@ -76,7 +76,7 @@ const NavItem = ({ icon, children, ...rest }) => {
     return (
         <Box
             as="a"
-            href="#"
+            //href="#"
             style={{ textDecoration: 'none' }}
             _focus={{ boxShadow: 'none' }}>
             <Flex
@@ -87,7 +87,7 @@ const NavItem = ({ icon, children, ...rest }) => {
                 role="group"
                 cursor="pointer"
                 _hover={{
-                    bg: 'cyan.400',
+                    bg: 'red.400',
                     color: 'white',
                 }}
                 {...rest}>

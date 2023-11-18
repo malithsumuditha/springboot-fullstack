@@ -11,20 +11,35 @@ import {
     Stack,
     Tag,
     useColorModeValue,
+    Button,
+    useDisclosure,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogBody, AlertDialogFooter, AlertDialog,
 } from '@chakra-ui/react'
 import React from "react";
+import {deleteStudent} from "../services/student.js";
+import {errorNotification, successNotification} from "../services/notification.js";
+import CreateStudentDrawer from "./CreateStudentDrawer.jsx";
+import UpdateStudentDrawer from "./UpdateStudentDrawer.jsx";
 
-export default function CardWithImage({studentId,name,email,age,address,gender, imageNumber}) {
+export default function CardWithImage({studentId,name,email,age,address,gender, imageNumber,fetchStudents}) {
 
     const genderOfStudent = gender === "male" || gender === "Male"? "men" : "women";
+
+    const { isOpen, onOpen, onClose } = useDisclosure()
+    const cancelRef = React.useRef()
 
     return (
         <Center py={6}>
             <Box
                 maxW={'300px'}
+                minW={'300px'}
                 w={'full'}
+                m={2}
                 bg={useColorModeValue('white', 'gray.800')}
-                boxShadow={'2xl'}
+                boxShadow={'lg'}
                 rounded={'md'}
                 overflow={'hidden'}>
                 <Image
@@ -58,7 +73,85 @@ export default function CardWithImage({studentId,name,email,age,address,gender, 
                         <Text color={'gray.500'}>{age} years | {gender.toLocaleUpperCase()}</Text>
                     </Stack>
 
+                    {/*<DeleteStudent*/}
+                    {/*    studentId={studentId}*/}
+                    {/*    fetchStudents={fetchStudents}*/}
+                    {/*/>*/}
+
                 </Box>
+
+                <Stack direction={'row'} justify={'center'} spacing={6} p={4}>
+                    <Stack>
+                        <UpdateStudentDrawer
+                            fetchStudents={fetchStudents}
+                            initialValues={{ name,email,age,address }}
+                            studentId={studentId}
+                        />
+                    </Stack>
+
+                    <Stack>
+                        <Button
+                            bg={"red.400"}
+                            color={'white'}
+                            rounded={'full'}
+                            _hover={{
+                                transform: 'translateY(-2px)',
+                                boxShadow: 'lg'
+                            }}
+                            _focus={{
+                                bg:'green.500'
+                            }}
+                            onClick={onOpen}
+                        >
+                            Delete
+                        </Button>
+
+                        <AlertDialog
+                            isOpen={isOpen}
+                            leastDestructiveRef={cancelRef}
+                            onClose={onClose}
+                        >
+                            <AlertDialogOverlay>
+                                <AlertDialogContent>
+                                    <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                                        Delete Customer
+                                    </AlertDialogHeader>
+
+                                    <AlertDialogBody>
+                                        Are you sure delete {name} ? You can't undo this action afterwards.
+                                    </AlertDialogBody>
+
+                                    <AlertDialogFooter>
+                                        <Button ref={cancelRef} onClick={onClose}>
+                                            Cancel
+                                        </Button>
+                                        <Button colorScheme='red' onClick={()=>{
+                                            deleteStudent(studentId)
+                                                .then(res=>{
+                                                    console.log(res);
+                                                    successNotification(
+                                                        "Student deleted",
+                                                        `student ${name} was successfully deleted`
+                                                    )
+                                                    fetchStudents();
+                                                }).catch(err => {
+                                                errorNotification(
+                                                    err.code,
+                                                    err.response.data.message
+                                                );
+                                            }).finally(()=>{
+                                                onClose();
+                                            })
+                                        }} ml={3}>
+                                            Delete
+                                        </Button>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialogOverlay>
+                        </AlertDialog>
+
+                    </Stack>
+                </Stack>
             </Box>
         </Center>
     )
