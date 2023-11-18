@@ -1,4 +1,4 @@
-FROM arm64v8/node
+FROM node:14
 ARG api_base_url
 WORKDIR /app
 COPY package*.json .
