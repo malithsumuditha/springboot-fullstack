@@ -5,7 +5,7 @@
 docker buildx create --use
 
 docker buildx build \
-    --platform=linux/arm64, linux/arm64 \
+    --platform=linux/arm64,linux/amd64 \
     -t "${USERNAME}/${REPO}:${TAG}" \
     -t "${USERNAME}/${REPO}:latest" \
     "${@:2}" \
