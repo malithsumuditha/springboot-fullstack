@@ -38,7 +38,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.address().fullAddress(),
                 20,
                 email,
-                "male"
+                "male",
+                "password"
 
         );
         underTest.save(student);
@@ -59,6 +60,7 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
             Assertions.assertThat(c.getAge()).isEqualTo(student.getAge());
             Assertions.assertThat(c.getAddress()).isEqualTo(student.getAddress());
             Assertions.assertThat(c.getGender()).isEqualTo(student.getGender());
+            Assertions.assertThat(c.getPassword()).isEqualTo(student.getPassword());
             System.out.println();
 
         });
@@ -76,7 +78,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.address().fullAddress(),
                 20,
                 email,
-                "male"
+                "male",
+                "password"
 
         );
         underTest.save(student);
@@ -115,7 +118,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.address().fullAddress(),
                 20,
                 FAKER.internet().safeEmailAddress()+"-"+ UUID.randomUUID(),
-                "male"
+                "male",
+                "password"
         );
         underTest.save(student);
 
@@ -140,7 +144,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.address().fullAddress(),
                 20,
                 email,
-                "male"
+                "male",
+                "password"
 
         );
         underTest.save(student);
@@ -169,7 +174,8 @@ class StudentJDBCDataAccessServiceTest extends AbstractTestContainerUnitTest {
                 FAKER.address().fullAddress(),
                 20,
                 email,
-                "male"
+                "male",
+                "password"
 
         );
         underTest.save(student);

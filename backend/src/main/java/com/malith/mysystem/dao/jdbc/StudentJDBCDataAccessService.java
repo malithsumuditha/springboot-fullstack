@@ -44,10 +44,11 @@ public class StudentJDBCDataAccessService implements StudentDao {
     @Override
     public void save(Student student) {
         var sql = """
-                INSERT INTO student (name,address,age,email,gender)
-                VALUES (?, ?, ?, ?,?)
+                INSERT INTO student (name,address,age,email,gender,password)
+                VALUES (?, ?, ?, ?,?,?)
                 """;
-        int update = jdbcTemplate.update(sql, student.getName(), student.getAddress(), student.getAge(), student.getEmail(), student.getGender());
+        int update = jdbcTemplate.update(sql,
+                student.getName(), student.getAddress(), student.getAge(), student.getEmail(), student.getGender(),student.getPassword());
         System.out.println("insert result "+update);
 
     }
@@ -69,5 +70,15 @@ public class StudentJDBCDataAccessService implements StudentDao {
         var sql = "UPDATE student SET name =?, address =?, age =?, email =? where id = ?";
 
         jdbcTemplate.update(sql,student.getName(),student.getAddress(),student.getAge(),student.getEmail(), student.getStudentId());
+    }
+
+    @Override
+    public Optional<Student> selectUserByEmail(String email) {
+        var sql = """
+                SELECT * FROM student where email = ?
+                """;
+        return jdbcTemplate.query(sql, studentRawMapper, email)
+                .stream()
+                .findFirst();
     }
 }

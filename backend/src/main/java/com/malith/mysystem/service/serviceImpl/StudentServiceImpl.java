@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +23,14 @@ public class StudentServiceImpl implements StudentService {
 
     private final ModelMapper modelMapper;
     private final StudentDao studentDao;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public StudentServiceImpl(ModelMapper modelMapper,
-                              @Qualifier("jdbc") StudentDao studentDao) {
+                              @Qualifier("jdbc") StudentDao studentDao, PasswordEncoder passwordEncoder) {
         this.modelMapper= modelMapper;
         this.studentDao = studentDao;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -47,6 +50,7 @@ public class StudentServiceImpl implements StudentService {
             throw new DuplicateResourceException("Student email %s Already Exist".formatted(studentRequestDto.getEmail()));
         }else {
             Student student = modelMapper.map(studentRequestDto, Student.class);
+            student.setPassword(passwordEncoder.encode(studentRequestDto.getPassword()));
             studentDao.save(student);
             //return modelMapper.map(savedStudent,StudentResponseDto.class);
         }
@@ -103,7 +107,7 @@ public class StudentServiceImpl implements StudentService {
             student.setEmail(studentRequestDto.getEmail());
             changes = true;
         }
-        if (studentRequestDto.getGender()!=null && studentRequestDto.getGender()!=student.getGender()){
+        if (studentRequestDto.getGender()!=null && !studentRequestDto.getGender().equals(student.getGender())){
             student.setGender(studentRequestDto.getGender());
             changes = true;
         }

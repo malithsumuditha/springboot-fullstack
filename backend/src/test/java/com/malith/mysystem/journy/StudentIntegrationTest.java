@@ -10,7 +10,9 @@ import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Mono;
 
@@ -40,23 +42,28 @@ class StudentIntegrationTest {
         String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email, gender
+                name, address, age, email, gender,"password"
         );
 
         //send post request
-        webTestClient.post()
+        String jwtToken = webTestClient.post()
                 .uri(STUDENT_URI + "save-student")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(studentRequestDto), StudentRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(HttpHeaders.AUTHORIZATION)
+                .get(0);
 
         //get all students
         List<StudentResponseDto> allStudents = webTestClient.get()
                 .uri(STUDENT_URI + "get-students")
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -67,7 +74,7 @@ class StudentIntegrationTest {
 
         //make sure that student is present
         StudentResponseDto expectedStudent = new StudentResponseDto(
-                name, address, age, email,gender
+                name, address, age, email,gender,email
         );
 
         Assertions.assertThat(allStudents)
@@ -86,6 +93,7 @@ class StudentIntegrationTest {
         webTestClient.get()
                 .uri(STUDENT_URI + "get-student/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -106,10 +114,14 @@ class StudentIntegrationTest {
         String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email,gender
+                name, address, age, email,gender,"password"
         );
 
-        //send post request
+        StudentRequestDto studentRequestDto2 = new StudentRequestDto(
+                name, address, age, email+".uk",gender,"password"
+        );
+
+        //send post request creat 1st user
         webTestClient.post()
                 .uri(STUDENT_URI + "save-student")
                 .accept(MediaType.APPLICATION_JSON)
@@ -119,10 +131,25 @@ class StudentIntegrationTest {
                 .expectStatus()
                 .isOk();
 
+        //send post request creat 2nd user
+        String jwtToken = webTestClient.post()
+                .uri(STUDENT_URI + "save-student")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(Mono.just(studentRequestDto2), StudentRequestDto.class)
+                .exchange()
+                .expectStatus()
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(HttpHeaders.AUTHORIZATION)
+                .get(0);
+
         //get all students
         List<StudentResponseDto> allStudents = webTestClient.get()
                 .uri(STUDENT_URI + "get-students")
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -138,18 +165,20 @@ class StudentIntegrationTest {
                 .findFirst()
                 .orElseThrow();
 
-        //delete student
+        //user 2 delete student 1
         webTestClient.delete()
                 .uri(STUDENT_URI + "delete-student/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
-        //get student by id
 
+        //student 2 get student 1 by id
         webTestClient.get()
                 .uri(STUDENT_URI + "get-student/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isNotFound();
@@ -167,23 +196,28 @@ class StudentIntegrationTest {
         String gender = "male";
 
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                name, address, age, email,gender
+                name, address, age, email,gender,"password"
         );
 
         //send post request
-        webTestClient.post()
+        String jwtToken = webTestClient.post()
                 .uri(STUDENT_URI + "save-student")
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(studentRequestDto), StudentRequestDto.class)
                 .exchange()
                 .expectStatus()
-                .isOk();
+                .isOk()
+                .returnResult(Void.class)
+                .getResponseHeaders()
+                .get(HttpHeaders.AUTHORIZATION)
+                .get(0);
 
         //get all students
         List<StudentResponseDto> allStudents = webTestClient.get()
                 .uri(STUDENT_URI + "get-students")
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -201,7 +235,7 @@ class StudentIntegrationTest {
 
         String newName = "HPMS Udara";
         StudentRequestDto updateRequestDto = new StudentRequestDto(
-                  newName,null,0,null,null
+                  newName,null,0,null,null,null
         );
 
         //update student
@@ -210,6 +244,7 @@ class StudentIntegrationTest {
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(Mono.just(updateRequestDto), StudentRequestDto.class)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk();
@@ -219,6 +254,7 @@ class StudentIntegrationTest {
         StudentResponseDto updatedStudent = webTestClient.get()
                 .uri(STUDENT_URI + "get-student/{id}", id)
                 .accept(MediaType.APPLICATION_JSON)
+                .header(HttpHeaders.AUTHORIZATION, String.format("Bearer %s",jwtToken))
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -227,7 +263,7 @@ class StudentIntegrationTest {
                 .getResponseBody();
 
         StudentResponseDto expectStudent = new StudentResponseDto(
-                id,newName,address,age,email,gender
+                id,newName,address,age,email,gender,email
         );
 
         Assertions.assertThat(updatedStudent).isEqualTo(expectStudent);

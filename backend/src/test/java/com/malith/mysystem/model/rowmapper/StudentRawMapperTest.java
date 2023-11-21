@@ -25,13 +25,14 @@ class StudentRawMapperTest {
         when(resultSet.getInt("age")).thenReturn(22);
         when(resultSet.getString("email")).thenReturn("m@gmail.com");
         when(resultSet.getString("gender")).thenReturn("male");
+        when(resultSet.getString("password")).thenReturn("password");
 
         // When
         Student actual = studentRawMapper.mapRow(resultSet, 1);
 
         // Then
         Student expected = new Student(
-          1,"Malith","Galle",22,"m@gmail.com","male"
+          1,"Malith","Galle",22,"m@gmail.com","male","password"
         );
 
         Assertions.assertThat(actual).isEqualTo(expected);

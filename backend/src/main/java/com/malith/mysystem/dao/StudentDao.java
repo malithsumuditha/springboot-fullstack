@@ -18,4 +18,5 @@ public interface StudentDao {
     void studentDeleteById(Long id);
 
     void updateStudent(StudentResponseDto student);
+    Optional<Student> selectUserByEmail(String email);
 }

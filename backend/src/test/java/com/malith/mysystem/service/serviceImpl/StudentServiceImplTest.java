@@ -7,22 +7,19 @@ import com.malith.mysystem.entity.Student;
 import com.malith.mysystem.exception.DuplicateResourceException;
 import com.malith.mysystem.exception.RequestValidationException;
 import com.malith.mysystem.exception.ResourceNotFoundException;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -33,11 +30,14 @@ class StudentServiceImplTest {
     private StudentDao studentDao;
     private StudentServiceImpl underTest;
     private ModelMapper modelMapper;
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void setUp() {
         modelMapper = new ModelMapper();
-        underTest = new StudentServiceImpl(modelMapper, studentDao);
+
+        underTest = new StudentServiceImpl(modelMapper, studentDao, passwordEncoder);
     }
 
     @Test
@@ -45,7 +45,7 @@ class StudentServiceImplTest {
         // Given
         long id = 1L;
         Student student = new Student(
-                id, "malith", "Matara", 19, "m@gmail.com","male"
+                id, "malith", "Matara", 19, "m@gmail.com","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
@@ -62,9 +62,12 @@ class StudentServiceImplTest {
         when(studentDao.existsStudentByEmail(email)).thenReturn(false);
 
         StudentRequestDto requestDto = new StudentRequestDto(
-                "Malith", "Matara", 20, email,"male"
+                "Malith", "Matara", 20, email,"male","password"
         );
 
+        String passwordHash = "akjdaskd";
+
+        when(passwordEncoder.encode(requestDto.getPassword())).thenReturn(passwordHash);
 
         // When
         underTest.saveStudent(requestDto);
@@ -80,6 +83,7 @@ class StudentServiceImplTest {
         assertThat(studentCaptorValue.getAge()).isEqualTo(requestDto.getAge());
         assertThat(studentCaptorValue.getEmail()).isEqualTo(requestDto.getEmail());
         assertThat(studentCaptorValue.getGender()).isEqualTo(requestDto.getGender());
+        assertThat(studentCaptorValue.getPassword()).isEqualTo(passwordHash);
 
     }
 
@@ -90,7 +94,7 @@ class StudentServiceImplTest {
         when(studentDao.existsStudentByEmail(email)).thenReturn(true);
 
         StudentRequestDto requestDto = new StudentRequestDto(
-                "Malith", "Matara", 20, email,"male"
+                "Malith", "Matara", 20, email,"male","password"
         );
 
 
@@ -133,7 +137,7 @@ class StudentServiceImplTest {
     void deleteStudentById() {
         // Given
         long id = 1;
-        Student student = new Student(id, "m", "a", 19, "a","male");
+        Student student = new Student(id, "m", "a", 19, "a","male","password");
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         // When
@@ -165,13 +169,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                "Malith","galle",21, newEmail,"male"
+                "Malith","galle",21, newEmail,"male","password"
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(false);
@@ -199,13 +203,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                "Malith",null,0, null,null
+                "Malith",null,0, null,null,null
         );
 
         // When
@@ -230,13 +234,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,0, newEmail,null
+                null,null,0, newEmail,null,null
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(false);
@@ -264,13 +268,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,0, newEmail,null
+                null,null,0, newEmail,null,null
         );
 
         when(studentDao.existsStudentByEmail(newEmail)).thenReturn(true);
@@ -292,13 +296,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                student.getName(),student.getAddress(),student.getAge(), student.getEmail(), student.getGender()
+                student.getName(),student.getAddress(),student.getAge(), student.getEmail(), student.getGender(),student.getPassword()
         );
 
         // When
@@ -318,13 +322,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,"Galle",0, null,null
+                null,"Galle",0, null,null,null
         );
 
         // When
@@ -350,13 +354,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,22, null,null
+                null,null,22, null,null,null
         );
 
         // When
@@ -382,13 +386,13 @@ class StudentServiceImplTest {
         // Given
         long id =1;
         Student student = new Student(
-                id,"m","a",19,"ma","male"
+                id,"m","a",19,"ma","male","password"
         );
         when(studentDao.findStudentByID(id)).thenReturn(Optional.of(student));
 
         String newEmail = "m@gmail.com";
         StudentRequestDto studentRequestDto = new StudentRequestDto(
-                null,null,0, null,"female"
+                null,null,0, null,"female",null
         );
 
         // When

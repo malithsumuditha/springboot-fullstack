@@ -18,7 +18,8 @@ public class StudentRawMapper implements RowMapper<Student> {
                 rs.getString("address"),
                 rs.getInt("age"),
                 rs.getString("email"),
-                rs.getString("gender")
+                rs.getString("gender"),
+                rs.getString("password")
         );
     }
 }

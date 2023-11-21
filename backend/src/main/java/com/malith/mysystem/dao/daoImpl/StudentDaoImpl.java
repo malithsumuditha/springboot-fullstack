@@ -49,4 +49,9 @@ public class StudentDaoImpl implements StudentDao {
     public void updateStudent(StudentResponseDto student) {
         studentRepository.save(modelMapper.map(student, Student.class));
     }
+
+    @Override
+    public Optional<Student> selectUserByEmail(String email) {
+        return studentRepository.findStudentByEmail(email);
+    }
 }
