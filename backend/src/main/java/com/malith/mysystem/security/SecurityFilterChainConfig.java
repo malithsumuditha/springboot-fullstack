@@ -36,8 +36,8 @@ public class SecurityFilterChainConfig {
                 .authorizeHttpRequests(rQ -> {
                     rQ.requestMatchers(HttpMethod.POST, "api/v1/student/save-student","api/v1/auth/login")
                             .permitAll()
-//                            .requestMatchers(HttpMethod.POST, "api/v1/auth/login")
-//                            .permitAll()
+                            .requestMatchers(HttpMethod.GET, "malith")
+                            .permitAll()
                             .anyRequest().authenticated();
 
                 });
