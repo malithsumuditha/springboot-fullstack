@@ -4,7 +4,7 @@
 
     {
       "name": "malithsumuditha-react",
-      "image": "malithsumuditha/malithsumuditha-react:22.11.2023.10.04.04",
+      "image": "malithsumuditha/malithsumuditha-react:22.11.2023.11.45.17",
       "essential": true,
       "memory": 256,
       "portMappings": [
