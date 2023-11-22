@@ -3,32 +3,20 @@
   "containerDefinitions": [
 
     {
-      "name": "malithsumuditha-react",
-      "image": "malithsumuditha/malithsumuditha-react:22.11.2023.10.04.04",
-      "essential": true,
-      "memory": 256,
-      "portMappings": [
-        {
-          "hostPort": 80,
-          "containerPort": 5173
-        }
-      ]
-    },
-    {
       "name": "malithsumuditha-api",
       "image": "malithsumuditha/malithsumuditha-api:22.11.2023.10.00.08",
       "essential": true,
       "memory": 512,
       "portMappings": [
         {
-          "hostPort": 8080,
+          "hostPort": 80,
           "containerPort": 8080
         }
       ],
       "environment": [
         {
           "name": "SPRING_DATASOURCE_URL",
-          "value": "jdbc:mysql://awseb-e-upbxsqrtmx-stack-awsebrdsdatabase-rfoupq0sahew.coetsdotlg05.ap-south-1.rds.amazonaws.com:3306/spring_test_db"
+          "value": "jdbc:mysql://awseb-e-qfe7p48cpb-stack-awsebrdsdatabase-dxuf9va50nqj.coetsdotlg05.ap-south-1.rds.amazonaws.com:3306/ebdb"
 
         }
       ]
