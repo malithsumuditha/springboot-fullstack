@@ -39,7 +39,7 @@ const MySelect = ({label, ...props}) => {
 };
 
 // And now we can use these
-const CreateStudentForm = ({ fetchStudents }) => {
+const CreateStudentForm = ({ onSuccess }) => {
     return (
         <>
             <Formik
@@ -80,12 +80,11 @@ const CreateStudentForm = ({ fetchStudents }) => {
                     setSubmitting(true);
                     saveStudent(student)
                         .then(res => {
-                            console.log(res);
                             successNotification(
                                 "Student saved",
                                 `${student.name} was successfully saved`
                             )
-                            fetchStudents();
+                            onSuccess(res.headers["authorization"]);
                         }).catch(err => {
                         errorNotification(
                           err.code,

@@ -7,7 +7,7 @@ import {
     DrawerHeader,
     DrawerOverlay, Input, useDisclosure
 } from "@chakra-ui/react";
-import CreateStudentForm from "./CreateStudentForm.jsx";
+import CreateStudentForm from "../shared/CreateStudentForm.jsx";
 import UpdateStudentForm from "./UpdateStudentForm.jsx";
 import React from "react";
 

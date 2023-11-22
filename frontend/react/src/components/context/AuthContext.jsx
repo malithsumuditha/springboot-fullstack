@@ -5,8 +5,7 @@ import {jwtDecode} from "jwt-decode";
 const AuthContext = createContext({});
 const AuthProvider = ({ children }) => {
     const [student, setStudent] = useState(null);
-
-    useEffect(()=>{
+    const setStudentFromToken = () => {
         let token = localStorage.getItem("access_token");
         if (token) {
             token = jwtDecode(token);
@@ -14,6 +13,10 @@ const AuthProvider = ({ children }) => {
                 username: token.sub,
             })
         }
+    }
+
+    useEffect(()=>{
+        setStudentFromToken();
     },[])
 
     const login = async (usernameAndPassword) => {
@@ -60,7 +63,8 @@ const AuthProvider = ({ children }) => {
             student,
             login,
             logout,
-            isStudentAuthenticated
+            isStudentAuthenticated,
+            setStudentFromToken
         }}>
 
             {children}

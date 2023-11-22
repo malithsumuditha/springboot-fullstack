@@ -7,7 +7,7 @@ import {
     DrawerHeader,
     DrawerOverlay, Input, useDisclosure
 } from "@chakra-ui/react";
-import CreateStudentForm from "./CreateStudentForm.jsx";
+import CreateStudentForm from "../shared/CreateStudentForm.jsx";
 
 const AddIcon = () => "+";
 const CloseIcon = () => "x";
@@ -32,7 +32,7 @@ const CreateStudentDrawer = ({fetchStudents}) => {
 
                 <DrawerBody>
                     <CreateStudentForm
-                        fetchStudents={fetchStudents}
+                        onSuccess={fetchStudents}
                     />
                 </DrawerBody>
 
