@@ -1,8 +1,8 @@
 import {Formik, Form, useField} from 'formik';
 import * as Yup from 'yup';
 import {Alert, AlertIcon, Box, Button, FormLabel, Input, Select, Stack} from "@chakra-ui/react";
-import {saveStudent} from "../services/student.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {saveStudent} from "../../services/student.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 const MyTextInput = ({label, ...props}) => {
 
@@ -49,6 +49,7 @@ const CreateStudentForm = ({ fetchStudents }) => {
                     email: '',
                     age: 0,
                     gender: '',
+                    password:'',
                 }}
                 validationSchema={Yup.object({
                     name: Yup.string()
@@ -70,6 +71,10 @@ const CreateStudentForm = ({ fetchStudents }) => {
                             'Invalid Gender'
                         )
                         .required('Required'),
+                    password: Yup.string()
+                        .min(4,"Password cannot be less than 4 characters")
+                        .max(20, "Password cannot be more than 20 characters")
+                        .required("Password is required"),
                 })}
                 onSubmit={(student, {setSubmitting}) => {
                     setSubmitting(true);
@@ -128,6 +133,13 @@ const CreateStudentForm = ({ fetchStudents }) => {
                                 <option value="male">Male</option>
                                 <option value="female">Female</option>
                             </MySelect>
+
+                            <MyTextInput
+                                label="Password"
+                                name="password"
+                                type="password"
+                                placeholder="Your password"
+                            />
                             <Button type="submit" isDisabled={!formik.isValid || formik.isSubmitting}>Submit</Button>
                         </Stack>
                     </Form>

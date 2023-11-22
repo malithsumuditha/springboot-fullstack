@@ -37,7 +37,7 @@ public class JWTUtil {
                 .issuedAt(Date.from(Instant.now()))
                 .expiration(
                         Date.from(
-                                Instant.now().plus(15, ChronoUnit.DAYS)
+                                Instant.now().plus(8, ChronoUnit.HOURS)
                         )
                 )
                 .signWith(getSigningKey())

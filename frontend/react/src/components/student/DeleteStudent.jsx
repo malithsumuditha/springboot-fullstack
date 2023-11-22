@@ -8,8 +8,8 @@ import {
 } from "@chakra-ui/react";
 
 import React from "react";
-import {deleteStudent} from "../services/student.js";
-import {errorNotification, successNotification} from "../services/notification.js";
+import {deleteStudent} from "../../services/student.js";
+import {errorNotification, successNotification} from "../../services/notification.js";
 
 
 const DeleteStudentButton = ({studentId,fetchStudents}) => {
