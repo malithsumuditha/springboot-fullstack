@@ -24,6 +24,12 @@ const router = createBrowserRouter([
     {
         path: "signup",
         element: <Signup/>
+    },
+    {
+        path: "students",
+        element: <ProtectedRoute>
+            <App/>
+        </ProtectedRoute>
     }
 ])
 
